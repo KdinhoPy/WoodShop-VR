@@ -1,84 +1,55 @@
 using UnityEngine;
 
 /// <summary>
-/// PickupSetup v2 - Configura objeto como pegável SEM CAIR no chão
+/// PickupSetup - Configura automaticamente um objeto como pegável
 /// 
-/// VERSÃO ATUALIZADA: deixa o objeto em modo "kinematic" inicialmente
-/// (parado no ar/lugar), só ativando física quando é solto.
+/// O que este script faz ao iniciar:
+///   - Adiciona tag "Pickup" ao objeto
+///   - Adiciona Box Collider se não tiver
+///   - Adiciona Rigidbody com massa e drag configurados
+///   - Se startStatic = true, deixa o objeto parado até ser pegado
 /// 
-/// Como usa:
-///   1. Adiciona este script no objeto que quer que seja pegável
-///   2. Ao iniciar o jogo, o objeto fica parado no lugar
-///   3. Quando o player pega (tecla E), ele segue a câmera
-///   4. Quando o player solta, ele cai normalmente (física ativa)
-/// 
-/// Autor: Ricardo - Projeto WoodShop-VR
+/// Usado em: ferramentas, tábuas, toras, pregos e parafusos
+/// Autor: Ricardo Augusto - WoodShop-VR
 /// </summary>
 public class PickupSetup : MonoBehaviour
 {
     [Header("Configurações Físicas (após soltar)")]
-    [Tooltip("Massa do objeto em kg")]
-    public float mass = 1f;
+    [Tooltip("Massa do objeto ao cair")]
+    public float Mass = 1f;
 
-    [Tooltip("Resistência ao movimento (0 = nenhuma, 5 = muita)")]
-    public float drag = 0.5f;
+    [Tooltip("Resistência do ar — reduz quicar ao cair")]
+    public float Drag = 0.5f;
 
     [Header("Comportamento Inicial")]
-    [Tooltip("Se marcado, objeto fica parado no ar até ser pego (não cai)")]
+    [Tooltip("Se true, objeto fica parado até ser pegado pela primeira vez")]
     public bool startStatic = true;
 
-    void Start()
+    void Awake()
     {
-        SetupAsPickup();
-    }
+        // Garante a tag Pickup
+        gameObject.tag = "Pickup";
 
-    /// <summary>
-    /// Configura todos os componentes necessários para ser pegável
-    /// </summary>
-    void SetupAsPickup()
-    {
-        // 1. Define a tag como "Pickup"
-        try
-        {
-            gameObject.tag = "Pickup";
-        }
-        catch (UnityException)
-        {
-            Debug.LogWarning("Tag 'Pickup' não existe! Crie em Edit > Project Settings > Tags and Layers");
-        }
+        // Adiciona Box Collider se não tiver nenhum
+        if (GetComponent<Collider>() == null)
+            gameObject.AddComponent<BoxCollider>();
 
-        // 2. Garante que tem um Collider
-        Collider col = GetComponent<Collider>();
-        if (col == null)
-        {
-            // Tenta adicionar MeshCollider (precisa ser Convex pra ter Rigidbody)
-            MeshFilter mf = GetComponent<MeshFilter>();
-            if (mf != null && mf.sharedMesh != null)
-            {
-                MeshCollider meshCol = gameObject.AddComponent<MeshCollider>();
-                meshCol.convex = true;
-                Debug.Log("MeshCollider (convex) adicionado em: " + gameObject.name);
-            }
-            else
-            {
-                // Se não tem mesh próprio, adiciona BoxCollider como fallback
-                gameObject.AddComponent<BoxCollider>();
-                Debug.Log("BoxCollider adicionado em: " + gameObject.name);
-            }
-        }
-
-        // 3. Garante que tem um Rigidbody
+        // Adiciona Rigidbody se não tiver
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb == null)
-        {
             rb = gameObject.AddComponent<Rigidbody>();
-            Debug.Log("Rigidbody adicionado em: " + gameObject.name);
+
+        // Configura massa e drag
+        rb.mass = Mass;
+        rb.linearDamping = Drag;
+
+        // Se startStatic, deixa kinematic até ser pegado
+        if (startStatic)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
         }
 
-        // 4. Aplica configurações
-        rb.mass = mass;
-        rb.linearDamping = drag;
-        rb.useGravity = !startStatic;       // Sem gravidade se for estático
-        rb.isKinematic = startStatic;       // Kinematic = não é afetado por física
+        Debug.Log("PickupSetup aplicado em: " + gameObject.name);
     }
 }

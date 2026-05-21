@@ -1,140 +1,102 @@
- WOODSHOP-VR — README
-   Projeto Final: Meu Primeiro Ambiente VR
-   Curso Web 3.0 | Residência em TIC 29
-________________________________________________
+# WoodShop-VR
 
-PROJETO: WoodShop-VR
-AUTOR:   Ricardo
-DATA:    19/05/2026
-ENGINE:  Unity 6.4 (6000.4.7f1)
-PLATAFORMA ALVO: Meta Quest (Android via OpenXR)
-________________________________________________
+Marcenaria Virtual para Treino de Coordenação Motora
+Web 3.0 | Residência em TIC 29 — Unidade 1, Capítulo 3
 
-SOBRE O PROJETO
-_______________________________________________
+---
 
-WoodShop-VR e um ambiente imersivo de marcenaria virtual
-desenvolvido como ferramenta de treino de coordenacao
-motora fina e grossa. O usuario pode explorar uma oficina
-de marcenaria construida dentro de uma casa de madeira,
-interagindo com ferramentas como martelo, machado, serra
-eletrica e serrote.
+NOME COMPLETO DO ALUNO
 
-A proposta tem aplicacoes em terapia ocupacional
-(reabilitacao neurologica pos-AVC), educacao tecnica
-(seguranca no uso de ferramentas) e lazer.
+Ricardo Augusto
 
-________________________________________________
+---
 
-REQUISITOS PARA ABRIR O PROJETO
-________________________________________________
+APRESENTANDO O PROJETO
 
-Unity Hub instalado
-- Unity Editor 6.4 (6000.4.7f1) ou superior
-- Modulos: Android Build Support (com OpenJDK e SDK/NDK)
-- Sistema operacional: Windows 10/11
-- RAM minima recomendada: 8 GB (16 GB ideal)
-________________________________________________
+O WoodShop-VR é uma experiência em Realidade Virtual desenvolvida na
+Unity 6.4 com suporte ao Meta Quest via OpenXR, simulando uma marcenaria
+interativa para treino de coordenação motora.
 
-COMO ABRIR
-________________________________________________
+O ambiente é composto por uma marcenaria rústica dentro de uma casa de
+madeira, contendo bancadas, ferramentas e materiais de trabalho.
 
-1. Abrir o Unity Hub
-2. Clicar em "Open" -> "Add project from disk"
-3. Selecionar a pasta WoodShop-VR
-4. Aguardar importacao inicial (pode demorar 3-5 minutos)
-5. Abrir a cena: Assets > Scenes > SampleScene
+O usuário pode:
+- Pegar ferramentas com a tecla E (martelo, machado, serra, serrote)
+- Ver o highlight amarelo ao mirar em objetos pegáveis
+- Ver a UI "Pressione E para pegar" ao mirar em objetos
+- Manipular materiais (toras, tábuas, pregos, parafusos)
+- Pregar pregos aproximando o martelo deles
 
-________________________________________________
+Mais de 30 objetos 3D na cena, organizados em 7 categorias interativas.
 
-CONTROLES — MODO PC (Editor)
-________________________________________________
+---
 
-W / A / S / D ........ Andar (frente, esquerda, tras, direita)
-SHIFT ................ Correr (velocidade dobrada)
-ESPACO ............... Pular
-BOTAO DIREITO MOUSE .. Olhar ao redor (segura e arrasta)
-E .................... Pegar / soltar objeto
+CONTEXTO E OBJETIVOS
 
-________________________________________________
+O WoodShop-VR foi criado para resolver um problema real: a falta de
+espaços seguros para praticar manipulação de ferramentas.
 
-OBJETOS PEGAVEIS:
-________________________________________________
+No contexto do Metaverso, o projeto tem três aplicações:
 
-- Martelo (Hammer_01)
-- Machado (Hatchet)
-- Serrote (Saw_01)
-- Tábuas Unidas (WoodPlanks)
-- Tábuas Negras(DarkPlank)
-- Toras (Log)
+- Terapia Ocupacional: reabilitação pós-AVC com exercícios de
+  coordenação motora fina e grossa
+- Educação Técnica: prática de manuseio de ferramentas em cursos
+  de marcenaria
+- Lazer: experiência imersiva de marcenaria sem risco de acidentes
 
-________________________________________________
+Em VR, o usuário pratica gestos reais em ambiente seguro, sem risco
+de acidentes ou desperdício de material.
 
-CONTROLES — MODO VR (Meta Quest)
-________________________________________________
+---
 
-Utiliza os controles padrao do template VR oficial da
-Unity (XR Interaction Toolkit + XR Hands). Compativel
-com Meta Quest 2, 3 e Pro.
-________________________________________________
+PROCESSO DE CRIAÇÃO E DIFICULDADES
 
-ESTRUTURA DO PROJETO
-________________________________________________
-Assets/
-  Marcenaria/   .... Modelos 3D importados (.glb)
-  Scripts/      .... PlayerControllerPC.cs, PickupSetup.cs
-  Scenes/       .... SampleScene.unity
-  Settings/     .... Configuracoes URP
-  XR/, XRI/     .... Pacotes OpenXR e XR Interaction Toolkit
-  TextMesh Pro/ .... Fontes e UI
+Como desenvolvi o projeto:
 
-ProjectSettings/    .... Player Settings, XR, Tags
-Packages/           .... manifest.json
+1. Setup do ambiente — Unity Hub, Unity 6.4, Git e GitHub Desktop
+2. Configuração XR — OpenXR + Meta Quest feature group
+3. Build Android — ARM64, IL2CPP, Vulkan e API 29 para Meta Quest
+4. Montagem da cena — assets do Poly Pizza e Sketchfab (Creative Commons)
+5. Scripts de interação — 6 scripts C# customizados desenvolvidos:
+   - PlayerControllerPC.cs: movimentação, câmera e sistema de pickup
+   - HighlightOnLook.cs: destaque amarelo ao mirar em objetos
+   - HoldRotation.cs: rotação customizada por ferramenta
+   - PickupSetup.cs: configuração automática de objetos pegáveis
+   - NailBehavior.cs: sistema de pregar com martelo
+   - UIPickup.cs: UI "Pressione E para pegar"
 
-________________________________________________
-SCRIPTS CUSTOMIZADOS
-________________________________________________
-PlayerControllerPC.cs
-  Controla o player no modo PC/Editor. Usa Rigidbody
-  para fisica (colide com paredes/chao). Inclui sistema
-  de pickup com raycast.
+Maiores desafios e soluções:
 
-PickupSetup.cs
-  Configura automaticamente qualquer objeto como pegavel
-  (tag Pickup + Collider + Rigidbody). Modo startStatic
-  mantem objetos imoveis ate serem pegados.
+PROBLEMA: Player atravessava paredes
+SOLUÇÃO: Reescrevi o script para usar Rigidbody.linearVelocity
+em vez de Transform.position, permitindo colisão física real.
 
-________________________________________________
-PACOTES XR INSTALADOS
-________________________________________________
-- OpenXR Plugin (1.16.1)
-- Unity OpenXR Meta (2.5.0)
-- XR Interaction Toolkit (3.4.1)
-- XR Hands (1.7.3)
-- XR Plugin Management (4.5.4)
+PROBLEMA: Tábuas empurravam o player
+SOLUÇÃO: Criei uma Layer Pickup e configurei a Layer Collision Matrix
+para ignorar colisão entre objetos pegáveis e o player.
 
-________________________________________________
-CONFIGURACAO DE BUILD (Meta Quest)
-________________________________________________
-- Plataforma: Android
-- Package Name: com.ricardo.woodshopvr
-- Min API Level: Android 10 (API 29)
-- Scripting Backend: IL2CPP
-- Target Architecture: ARM64
-- Graphics API: Vulkan
-- Texture Compression: ASTC
+PROBLEMA: Highlight não funcionava em objetos com sub-meshes
+SOLUÇÃO: Usei GetComponentsInChildren para capturar todos os
+Renderers do objeto e seus filhos.
 
-________________________________________________
-ASSETS — CREDITOS
-________________________________________________
-Modelos 3D obtidos em plataformas gratuitas com licenca
-Creative Commons:
-- Poly Pizza (poly.pizza) — varios autores
-- Sketchfab (sketchfab.com) — varios autores
+PROBLEMA: Serra ficava com rotação errada ao segurar
+SOLUÇÃO: Criei o script HoldRotation.cs com rotação customizada
+por objeto, aplicada apenas ao segurar.
 
-________________________________________________
-CONTATO
-________________________________________________
-Aluno: Ricardo
-GitHub: KdinhoPy
-Curso: Web 3.0 — Residencia em TIC 29
+PROBLEMA: Deleção acidental de elementos do template VR
+SOLUÇÃO: Aprendi a usar o ícone de olho na Hierarchy para ocultar
+em vez de deletar.
+
+---
+
+CONFIGURAÇÃO TÉCNICA
+
+- Unity: 6.4 (6000.4.7f1)
+- Pipeline: URP (Universal Render Pipeline)
+- XR: OpenXR + Unity OpenXR Meta 2.5.0
+- Build: Android / Meta Quest (ARM64, IL2CPP, Vulkan, API 29)
+- Hardware: Acer Nitro V15, 16 GB RAM, GPU NVIDIA 8 GB VRAM
+
+---
+
+Projeto desenvolvido para a Residência em TIC 29 — Web 3.0

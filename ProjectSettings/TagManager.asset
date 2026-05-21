@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Anchor
   - Pickup
+  - Hammer
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Pickup
   - Water
   - UI
   - 
