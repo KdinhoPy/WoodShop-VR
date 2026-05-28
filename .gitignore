@@ -73,3 +73,16 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+# Ignorar pastas Unity geradas na c\u00f3pia corrigida
+WoodShop-VR-v2-Finalizado-Corrigido/Library/
+WoodShop-VR-v2-Finalizado-Corrigido/Temp/
+WoodShop-VR-v2-Finalizado-Corrigido/Logs/
+WoodShop-VR-v2-Finalizado-Corrigido/obj/
+WoodShop-VR-v2-Finalizado-Corrigido/Build/
+WoodShop-VR-v2-Finalizado-Corrigido/Builds/
+WoodShop-VR-v2-Finalizado-Corrigido/UserSettings/
+WoodShop-VR-v2-Finalizado-Corrigido/MemoryCaptures/
+WoodShop-VR-v2-Finalizado-Corrigido/.vs/
+WoodShop-VR-v2-Finalizado-Corrigido/.vsconfig
